@@ -13,6 +13,7 @@ const filterObj = (obj, ...alowedFields) => {
   return newObj;
 };
 exports.getAllUsers = catchAsync(async (req, res, next) => {
+
   const users = await User.find();
   // SEND RESPONSE
   res.status(200).json({
@@ -26,7 +27,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
-  console.log(req);
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
@@ -46,6 +46,11 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     status: "success",
     data: userUpdate,
   });
+});
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+  res.status(204).json({ status: "success", data: null });
 });
 
 exports.getUser = (req, res) => {

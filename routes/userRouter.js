@@ -10,8 +10,9 @@ const {
   resetPassword,
   updatePassword,
   protect,
+  restrictTo,
 } = authController;
-const { getAllUsers, updateMe } = userController;
+const { getAllUsers, updateMe, deleteMe } = userController;
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router.post("/forgotPassword", forgotPassword);
 router.patch("/resetPassword/:token", resetPassword);
 router.patch("/updateMyPassword", protect, updatePassword);
 router.patch("/updateMe", protect, updateMe);
-router.route("/").get(getAllUsers);
+router.patch("/deleteMe", protect, deleteMe);
+router.route("/").get(protect, restrictTo("admin"), getAllUsers);
 
 module.exports = router;
