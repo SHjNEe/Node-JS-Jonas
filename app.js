@@ -10,6 +10,7 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errorController");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRouter");
+const reviewRouter = require("./routes/reviewRouter");
 //MIDDLEWARES
 //Security HELMET
 app.use(helmet());
@@ -60,6 +61,7 @@ app.use((req, res, next) => {
 //ROUTES
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/reviews", reviewRouter);
 //404 NOT FOUND
 app.all("*", (req, res, next) => {
   //1

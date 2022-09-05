@@ -22,7 +22,11 @@ router.route("/monthly-plan/:year").get(getMonthlyPlan);
 // router.param("id", checkId);
 router
   .route("/")
-  .get(authController.protect, getAllTours)
+  .get(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    getAllTours
+  )
   .post(createTours);
 router
   .route("/:id")
