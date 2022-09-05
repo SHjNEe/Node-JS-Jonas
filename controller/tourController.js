@@ -17,12 +17,19 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
     .sort()
-    .limitedFields()
+    .limitFields()
     .paginate();
   const tours = await features.query;
-  res.status(200).json({ status: 200, result: tours.length, data: { tours } });
-});
 
+  // SEND RESPONSE
+  res.status(200).json({
+    status: "success",
+    results: tours.length,
+    data: {
+      tours,
+    },
+  });
+});
 exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
   if (!tour) {
