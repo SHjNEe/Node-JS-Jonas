@@ -1,45 +1,46 @@
 const fs = require("fs");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const Tour = require("./../../models/tourModel");
 
 dotenv.config({ path: "./config.env" });
-const db = process.env.DATABASE.replace(
+
+const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
   process.env.DATABASE_PASSWORD
 );
-mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
-    console.log("DB Connection success");
-  });
 
-// const Tour = require("../../models/tourModel");
-const User = require("../../models/userModel");
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    // useCreateIndex: true,
+    // useFindAndModify: false,
+  })
+  .then(() => console.log("DB connection successful!"));
+
+// READ JSON FILE
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, "utf-8"));
 
 // IMPORT DATA INTO DB
-const Users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, "utf-8"));
-const importData = async function () {
+const importData = async () => {
   try {
-    await User.create(Users);
-    console.log("Data success");
+    await Tour.create(tours);
+    console.log("Data successfully loaded!");
   } catch (err) {
     console.log(err);
   }
   process.exit();
 };
-//DELETE ALL DATA FROM FB
 
+// DELETE ALL DATA FROM DB
 const deleteData = async () => {
   try {
-    await User.deleteMany();
-    console.log("Delete many is successful");
+    await Tour.deleteMany();
+    console.log("Data successfully deleted!");
   } catch (err) {
     console.log(err);
   }
+  process.exit();
 };
 
 if (process.argv[2] === "--import") {

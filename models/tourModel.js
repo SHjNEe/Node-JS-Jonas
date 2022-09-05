@@ -13,7 +13,7 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       maxLenght: [40, "A tour name must have less or qual then 40 characters"],
       minLength: [10, "A tour name must have more or qual then 10 characters"],
-      validate: [validator.isAlpha, "Tour name must be character"],
+      // validate: [validator.isAlpha, "Tour name must be character"],
     },
     slug: String,
 
@@ -50,7 +50,7 @@ const tourSchema = new mongoose.Schema(
     priceDiscount: {
       type: Number,
       validate: {
-        validator: function (val) {
+        validator: function(val) {
           return val < this.price;
         },
         message: "Discount price must be less than price",
@@ -82,22 +82,46 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    startLocation: {
+      //GEO JSON
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"],
+      },
+      typecoordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: "Point",
+          enum: ["Point"],
+        },
+        typecoordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-tourSchema.virtual("durationWeeks").get(function () {
+tourSchema.virtual("durationWeeks").get(function() {
   return this.duration / 7;
 });
 //DOCUMENT MIDDLEWARES: run before save() and create()
-tourSchema.pre("save", function (next) {
+tourSchema.pre("save", function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
 //QUERY MIDDLEWARES:
-tourSchema.pre(/^find/, function (next) {
-  this.find({ secretTour: { $ne: true } });
+tourSchema.pre(/^find/, function(next) {
+  this.find({ secretTour: { $ne: false } });
   this.start = Date.now();
   next();
 });
@@ -108,8 +132,8 @@ tourSchema.pre(/^find/, function (next) {
 // });
 
 //AGGREGATE
-tourSchema.pre("aggregate", function (next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+tourSchema.pre("aggregate", function(next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: false } } });
   next();
 });
 

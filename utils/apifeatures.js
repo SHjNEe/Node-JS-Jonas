@@ -8,7 +8,7 @@ class APIFeatures {
     // 1) FILLTERING
     // 127.0.0.1:3000/api/v1/tours?duration=5&price=1000
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const q = { ...this.queryStr };
+    const q = { ...this.queryString };
     const excludedFields = ["page", "sort", "limit", "fields"];
     excludedFields.forEach((el) => delete q[el]);
 
@@ -33,7 +33,7 @@ class APIFeatures {
     return this;
   }
 
-  limitedFields() {
+  limitFields() {
     // 4) Field limiting
     if (this.queryString.fields) {
       //127.0.0.1:3000/api/v1/tours?fields=name,duration,price,difficulty
