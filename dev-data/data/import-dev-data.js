@@ -24,11 +24,15 @@ mongoose
 const reviews = JSON.parse(
   fs.readFileSync(`${__dirname}/reviews.json`, "utf-8")
 );
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, "utf-8"));
+const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, "utf-8"));
 
 // IMPORT DATA INTO DB
 const importData = async () => {
   try {
     await Review.create(reviews);
+    await Tour.create(tours);
+    await User.create(users, { validateBeforeSave: false });
     console.log("Data successfully loaded!");
   } catch (err) {
     console.log(err);
@@ -40,6 +44,8 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Review.deleteMany();
+    await Tour.deleteMany();
+    await User.deleteMany();
     console.log("Data successfully deleted!");
   } catch (err) {
     console.log(err);

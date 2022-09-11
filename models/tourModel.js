@@ -113,12 +113,21 @@ const tourSchema = new mongoose.Schema(
 
     // Child Ref
     guides: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+    // reviews: [{ type: mongoose.Schema.ObjectId, ref: "Review" }],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
-
+// tourSchema.indexes({ price: 1 });
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
 tourSchema.virtual("durationWeeks").get(function() {
   return this.duration / 7;
+});
+// Virtual populate
+tourSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "tour",
+  localField: "_id",
 });
 //DOCUMENT MIDDLEWARES: run before save() and create()
 tourSchema.pre("save", function(next) {
@@ -133,7 +142,7 @@ tourSchema.pre("save", function(next) {
 // });
 //QUERY MIDDLEWARES:
 tourSchema.pre(/^find/, function(next) {
-  this.find({ secretTour: { $ne: false } });
+  this.find({ secretTour: { $ne: true } });
   this.start = Date.now();
   next();
 });
@@ -152,7 +161,7 @@ tourSchema.pre(/^find/, function(next) {
 
 //AGGREGATE
 tourSchema.pre("aggregate", function(next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: false } } });
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
 });
 

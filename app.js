@@ -10,7 +10,7 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errorController");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRouter");
-const reviewRouter = require("./routes/reviewRouter");
+const reviewRouter = require("./routes/reviewRoutes");
 //MIDDLEWARES
 //Security HELMET
 app.use(helmet());
