@@ -12,6 +12,7 @@ const globalErrorHandler = require("./controller/errorController");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRouter");
 const reviewRouter = require("./routes/reviewRoutes");
+const viewRouter = require("./routes/viewRouter");
 
 //Serving static files
 app.use(express.static(path.join(__dirname, "public")));
@@ -66,10 +67,9 @@ app.use((req, res, next) => {
 
 //ROUTE HANDLER
 
-//ROUTES
-app.get("/", (req, res) => {
-  res.status(200).render("base");
-});
+//VIEW ROUTE
+app.use("/", viewRouter);
+// API ROUTE
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/reviews", reviewRouter);
