@@ -1,4 +1,5 @@
 const catchAsync = require("./../utils/catchAsync");
+
 const AppError = require("./../utils/appError");
 const APIFeatures = require("./../utils/apiFeatures");
 
@@ -78,7 +79,6 @@ exports.getAll = (Model) =>
       .paginate();
     // const doc = await features.query.explain();
     const doc = await features.query;
-
     // SEND RESPONSE
     res.status(200).json({
       status: "success",

@@ -39,7 +39,7 @@ router.patch("/updateMe", updateMe);
 router.patch("/deleteMe", deleteMe);
 
 //Protect router with role
-router.use(restrictTo("admin"));
+router.use(restrictTo("admin", "user"));
 router.route("/").get(getAllUsers);
 router.post("/", createUser);
 router
