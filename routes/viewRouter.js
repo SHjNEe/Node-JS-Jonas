@@ -1,10 +1,9 @@
 const express = require("express");
-const viewController = require("../controller/viewController");
-const { getOverview, getHomePage, getTour } = viewController;
+const viewsController = require("../controllers/viewsController");
 
 const router = express.Router();
-router.get("/", getOverview);
-// router.get("/overview", getOverview);
-router.get("/tour", getTour);
+
+router.get("/", viewsController.getOverview);
+router.get("/tours/:slug", viewsController.getTour);
 
 module.exports = router;
