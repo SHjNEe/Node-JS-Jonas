@@ -8,6 +8,7 @@ const app = require("../app");
 const {
   signUp,
   logIn,
+  logOut,
   forgotPassword,
   resetPassword,
   updatePassword,
@@ -28,6 +29,7 @@ const router = express.Router();
 
 router.post("/signup", signUp);
 router.post("/login", logIn);
+router.get("/logout", logOut);
 router.post("/forgotPassword", forgotPassword);
 router.patch("/resetPassword/:token", resetPassword);
 
