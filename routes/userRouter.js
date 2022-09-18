@@ -1,9 +1,7 @@
 const express = require("express");
-
 const userController = require("../controllers/userController");
 // const reviewController = require("../controller/reviewController");
 const authController = require("../controllers/authController");
-const app = require("../app");
 
 const {
   signUp,
@@ -23,6 +21,8 @@ const {
   getUser,
   createUser,
   updateUser,
+  uploadUserPhoto,
+  resizeUserPhoto,
 } = userController;
 
 const router = express.Router();
@@ -37,7 +37,7 @@ router.patch("/resetPassword/:token", resetPassword);
 router.use(protect);
 router.get("/me", getMe, getUser);
 router.patch("/updateMyPassword", updatePassword);
-router.patch("/updateMe", updateMe);
+router.patch("/updateMe", uploadUserPhoto, resizeUserPhoto, updateMe);
 router.patch("/deleteMe", deleteMe);
 
 //Protect router with role

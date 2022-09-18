@@ -35,9 +35,12 @@ if (userDataForm) {
     e.preventDefault();
     document.querySelector(".btn--save-info").textContent = "Updating...";
 
-    const name = document.querySelector("#name--change").value;
-    const email = document.querySelector("#email--change").value;
-    await updateData({ name, email }, "Infomation");
+    const form = new FormData();
+    form.append("name", document.querySelector("#name--change").value);
+    form.append("email", document.querySelector("#email--change").value);
+    form.append("photo", document.querySelector("#photo").files[0]);
+    console.log(form);
+    await updateData(form, "Infomation");
     document.querySelector(".btn--save-info").textContent = "Save settings";
   });
 }
