@@ -45,6 +45,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
 
 exports.logIn = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email, password);
   //1) Check email and password is existing
   if (!email || !password) {
     next(new AppError("Please provide a valid email and password", 400));
@@ -93,6 +94,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError("User changed password", 401));
   }
   req.user = freshUser;
+  res.locals.user = freshUser;
   next();
 });
 
@@ -210,6 +212,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
+
   const user = await User.findById(req.user.id).select("+password");
 
   // 2) Check if POSTed current password is correct
@@ -218,6 +221,10 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   }
 
   // 3) If so, update password
+
+  if (req.body.password !== req.body.passwordConfirm) {
+    return next(new AppError("Your password confirm is wrong.", 401));
+  }
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();

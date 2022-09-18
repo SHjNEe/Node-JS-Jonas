@@ -35,7 +35,10 @@ export const logoutHandler = async () => {
       location.reload(true);
     }
   } catch (err) {
-    console.log(err.response.data.message);
     showAlert("error", "Error logging out! Try again!");
   }
+};
+export const changePasswordHandler = async () => {
+  try {
+  } catch (error) {}
 };
