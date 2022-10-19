@@ -11,12 +11,10 @@ const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 
 const AppError = require("./utils/appError");
+
+const Router = require("./utils/Router");
 const globalErrorHandler = require("./controllers/errorController");
-const tourRouter = require("./routes/tourRoutes");
-const userRouter = require("./routes/userRoutes");
-const reviewRouter = require("./routes/reviewRoutes");
-const viewRouter = require("./routes/viewRoutes");
-const bookingRouter = require("./routes/bookingRoutes");
+
 
 //Serving static files
 app.use(express.static(path.join(__dirname, "public")));
@@ -73,14 +71,8 @@ app.use((req, res, next) => {
   next();
 });
 //ROUTE HANDLER
+Router(app);
 
-//VIEW ROUTE
-app.use("/", viewRouter);
-// API ROUTE
-app.use("/api/v1/tours", tourRouter);
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/reviews", reviewRouter);
-app.use("/api/v1/bookings", bookingRouter);
 //404 NOT FOUND
 app.all("*", (req, res, next) => {
   //1

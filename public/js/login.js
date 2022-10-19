@@ -36,6 +36,7 @@ export const logoutHandler = async () => {
     }
   } catch (err) {
     showAlert("error", "Error logging out! Try again!");
+    console.log("Test");
   }
 };
 export const changePasswordHandler = async () => {
